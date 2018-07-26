@@ -9,20 +9,20 @@ start_time = time.time()
 
 class TestClass_SetupPlanner(object):
     def test_setup_planner(self, sut, offline_token, userid):
-        print "\n\n==>Planner Test Setup Start....\n"
+        print("\n\n==>Planner Test Setup Start....\n")
         if sut is None:
             launch_detail.base_url[launch_detail.base_wit] = r"https://api.openshift.io"
-            print "SUT (WIT Target) not provided!!! Using default production SUT = ", launch_detail.base_url[launch_detail.base_wit]
+            print("SUT (WIT Target) not provided!!! Using default production SUT = ", launch_detail.base_url[launch_detail.base_wit])
         else:
             launch_detail.base_url[launch_detail.base_wit] = sut
-            print "SUT set to = ", sut
+            print("SUT set to = ", sut)
 
         if userid is None:
             launch_detail.userid_primary = launch_detail.userid_prod_primary_default
-            print "USERID not provided! Going ahead with the default USERID = ", launch_detail.userid_prod_primary_default
+            print("USERID not provided! Going ahead with the default USERID = ", launch_detail.userid_prod_primary_default)
         else:
             launch_detail.userid_primary = userid
-            print "USERID set to = ", launch_detail.userid_primary
+            print("USERID set to = ", launch_detail.userid_primary)
 
         if offline_token is None:
             pytest.exit("OFFLINE_TOKEN not provided!!! Terminating the run!!!!!!!!!!!")
@@ -32,12 +32,12 @@ class TestClass_SetupPlanner(object):
             if launch_detail.token_userid_primary is None:
                 pytest.exit("ACCESS_TOKEN cannot be generated!!! Terminating the run!!!!!!!!!!!")
             else:
-                print "ACCESS_TOKEN set to = A secret in Jenkins ;)"
+                print("ACCESS_TOKEN set to = A secret in Jenkins ;)")
 
         # Define Request Header, that includes Access Token
         request_detail.headers_default = {request_detail.content_type_key_default: request_detail.content_type_default, request_detail.authorization_key_default: request_detail.authorization_carrier_default + launch_detail.token_userid_primary}
-        print "\n==>Planner Test Setup Complete....\n"
-        print "+++++++++++++++++ Running Planner API Tests ++++++++++++++++\n"
+        print("\n==>Planner Test Setup Complete....\n")
+        print("+++++++++++++++++ Running Planner API Tests ++++++++++++++++\n")
 
 
 class TestClass_SDD(object):
@@ -76,7 +76,7 @@ class TestClass_SDD(object):
             spacename = helpers.extract_value("data.attributes.name", r)
             spacelink = helpers.extract_value("data.links.self", r)
             content_type_header = helpers.extract_header("Content-Type", r)
-            print "\nSpace created : ", spacename
+            print("\nSpace created : ", spacename)
             # Save and retain dynamic data for later use
             dynamic_vars.spaceid = spaceid
             dynamic_vars.spacename = spacename
@@ -410,10 +410,10 @@ class TestClass_SDD(object):
             if cleanup:
                 r = helpers.delete_space(dynamic_vars.spaceid)
                 if r.status_code == 200:
-                    print "\nSpace deleted : %s" % dynamic_vars.spacename
+                    print("\nSpace deleted : %s" % dynamic_vars.spacename)
                 else:
-                    print "\nFailed to delete Space : %s" % dynamic_vars.spacename
-                    print "\nBug https://github.com/openshiftio/openshift.io/issues/3932\n"
+                    print("\nFailed to delete Space : %s" % dynamic_vars.spacename)
+                    print("\nBug https://github.com/openshiftio/openshift.io/issues/3932\n")
                 assert r.status_code == 200
 
 
@@ -454,7 +454,7 @@ class TestClass_SCRUM(object):
             spacename = helpers.extract_value("data.attributes.name", r)
             spacelink = helpers.extract_value("data.links.self", r)
             content_type_header = helpers.extract_header("Content-Type", r)
-            print "\nSpace created : ", spacename
+            print("\nSpace created : ", spacename)
             # Save and retain dynamic data for later use
             dynamic_vars.spaceid = spaceid
             dynamic_vars.spacename = spacename
@@ -762,18 +762,18 @@ class TestClass_SCRUM(object):
                 with open(filepath, 'w') as f:
                     json.dump(launch_detail.launch_details_dict, f, sort_keys=True, indent=4)
             except Exception:
-                print "Exception creating launch_info_dump.json"
+                print("Exception creating launch_info_dump.json")
 
             if cleanup:
                 r = helpers.delete_space(dynamic_vars.spaceid)
                 if r.status_code == 200:
-                    print "\nSpace deleted : %s" % dynamic_vars.spacename
+                    print("\nSpace deleted : %s" % dynamic_vars.spacename)
                 else:
-                    print "\nFailed to delete Space : %s" % dynamic_vars.spacename
-                    print "\nBug https://github.com/openshiftio/openshift.io/issues/3932\n"
+                    print("\nFailed to delete Space : %s" % dynamic_vars.spacename)
+                    print("\nBug https://github.com/openshiftio/openshift.io/issues/3932\n")
                 assert r.status_code == 200
 
             global start_time
-            print "\n\nTotal time taken: %s seconds" % int((end_time - start_time))
+            print("\n\nTotal time taken: %s seconds" % int((end_time - start_time)))
 
-            print "\n+++++++++++++++++ Planner API Tests Complete +++++++++++++++"
+            print("\n+++++++++++++++++ Planner API Tests Complete +++++++++++++++")
